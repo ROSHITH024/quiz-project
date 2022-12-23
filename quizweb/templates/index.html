@@ -2,4 +2,66 @@
 
 {%block body_block%}
 <h1>welcome</h1>
+<div class="row">
+    <div class="col-4"></div>
+    <div class="col-4">
+        <form action="" method="post" enctype="multipart/form-data">
+            {%csrf_token%}
+            {{form.as_p}}
+            <input type="submit" value="Add">
+        </form>
+    </div>
+    <div class="col-4"></div>
+</div>
+
+<!-- {{questions}} -->
+
+<div class="row gx-4 gx-lg-5 justify-content-center">
+    {%for q in questions%}
+    <div class="col-md-10 col-lg-8 col-xl-7">
+        <!-- Post preview-->
+        <div class="post-preview">
+            {%if q.image%}
+            <div>
+                <img src="{{q.images.url}}" alt="" class="w-100">
+            </div>
+            {%endif%}
+            <a href="post.html">
+                <h2 class="post-title">{{q.title}}</h2>
+                <h5 class="post-subtitle">{{q.description}}</h5>
+            </a>
+            <p class="post-meta">
+                Posted by
+                <a href="#!">{{q.user}}</a>
+                on {{q.create_date}}
+            </p>
+        </div>
+        <div>
+            <form action="{%url 'add-answer' q.id%}" method="post">
+                {%csrf_token%}
+                <input type="text" placeholder="enter your answer" name="answer" class="form-control">
+                <!-- <a href="" class="btn btn-type-submit"><i class="fa-solid fa-paper-plane"></i></a> -->
+                <button type="submit" class="mt-2"><i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+        </div>
+        <h5 class="post-subtitle">Answers</h5>
+        {%for ans in q.question_answers%}
+        <div class="post-preview">
+            {{ans}}
+            <p class="post-meta">
+                Posted by
+                <a href="#!">{{ans.user}}</a>
+                on {{ans.create_date}}
+            </p>
+            <!-- <button class="btn "><i class="fa-solid fa-heart"></i></button> -->
+            <a href="{%url 'add-upvote' ans.id%}" class="btn btn-sm"><i class="fa-regular fa-heart"></i> {{ans.votecount}}</a>
+            <!-- <a href="" class="btn btn-warning btn-sm">upvote</a> -->
+        </div>
+        {%endfor%}
+        <!-- Divider-->
+        <hr class="my-4" />
+    </div>
+    {%endfor%}
+</div>
+
 {%endblock%}

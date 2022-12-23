@@ -3,6 +3,18 @@ from django.contrib.auth.models import User
 from quiz.models import Questions,Answers
 from django.contrib.auth.forms import UserCreationForm
 
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model=Questions
+        fields=["title","description","image"]
+
+        widgets={
+            "title":forms.TextInput(attrs={"class":"form-control"}),
+            "description":forms.Textarea(attrs={"class":"form-control","row":5}),
+            "image":forms.FileInput(attrs={"class":"form-select"})
+        }
+
+
 class UserRegistration(UserCreationForm):
     password1=forms.PasswordInput(attrs={"class":"form-control"})
     password2=forms.PasswordInput(attrs={"class":"form-control"})
